@@ -1,0 +1,5 @@
+//starting
+npx create-next-app
+npx create-next-app@latest --ts
+
+nom run dev
