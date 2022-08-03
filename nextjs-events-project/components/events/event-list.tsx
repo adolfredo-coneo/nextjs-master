@@ -10,7 +10,14 @@ const EventList: React.FC<Props> = ({ items }) => {
   return (
     <ul>
       {items.map((item) => (
-        <EventItem />
+        <EventItem
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          location={item.location}
+          date={item.date}
+          image={item.image}
+        />
       ))}
     </ul>
   );
