@@ -1,6 +1,7 @@
 import React from 'react';
 
 import EventItem from './event-item';
+import classes from './event-list.module.css';
 
 type Props = {
   items: Array<any>;
@@ -8,7 +9,7 @@ type Props = {
 
 const EventList: React.FC<Props> = ({ items }) => {
   return (
-    <ul>
+    <ul className={classes.list}>
       {items.map((item) => (
         <EventItem
           key={item.id}
