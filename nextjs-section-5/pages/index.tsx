@@ -1,14 +1,12 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import fs from 'fs/promises';
+import path from 'path';
 
 interface Props {
   products: Array<{
     id: number;
-    name: string;
-    price: number;
-    image: string;
+    title: string;
+    description: string;
   }>;
 }
 const Home: NextPage<Props> = (props) => {
@@ -16,21 +14,35 @@ const Home: NextPage<Props> = (props) => {
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}>{product.name}</li>
+        <li key={product.id}>{product.title}</li>
       ))}
     </ul>
   );
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps = async (context) => {
+  console.log('(Re-)Generating the props');
+  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
+  const jsonData = await fs.readFile(filePath, 'utf8');
+  const data = JSON.parse(jsonData);
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/no-data',
+      },
+    };
+  }
+
+  if (data.products.length === 0) {
+    return { notFound: true };
+  }
+
   return {
     props: {
-      products: [
-        { id: 'p1', name: 'Product 1' },
-        { id: 'p2', name: 'Product 2' },
-        { id: 'p3', name: 'Product 3' },
-      ],
+      products: data.products,
     },
+    revalidate: 10,
   };
 };
 
