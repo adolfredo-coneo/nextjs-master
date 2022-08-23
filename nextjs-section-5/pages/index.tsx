@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
+import Link from 'next/link';
 
 interface Props {
   products: Array<{
@@ -14,13 +15,15 @@ const Home: NextPage<Props> = (props) => {
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
+        <li key={product.id}>
+          <Link href={`/products/${product.id}`}>{product.title}</Link>
+        </li>
       ))}
     </ul>
   );
 };
 
-export const getStaticProps = async (context) => {
+export const getStaticProps = async () => {
   console.log('(Re-)Generating the props');
   const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
   const jsonData = await fs.readFile(filePath, 'utf8');
