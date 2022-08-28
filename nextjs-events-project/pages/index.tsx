@@ -1,4 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
 import EventList from '../components/events/event-list';
 import { getFeaturedEvents } from './api';
 
@@ -15,6 +16,10 @@ const HomePage: NextPage<Props> = ({ featuredEvents }) => {
 
   return (
     <div>
+      <Head>
+        <title>Next.js Events</title>
+        <meta name="description" content="Find great events" />
+      </Head>
       <EventList items={featuredEvents} />
     </div>
   );
