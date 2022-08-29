@@ -1,4 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import EventContent from '../../components/event-detail/event-content';
@@ -20,6 +21,10 @@ const EventDetailPage: NextPage<Props> = ({ event }) => {
     <>
       {event && (
         <>
+          <Head>
+            <title>{event.title}</title>
+            <meta name="description" content={event.description} />
+          </Head>
           <EventSummary title={event.title} />
           <EventLogistics
             date={event.date}

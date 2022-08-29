@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -36,13 +37,25 @@ const FilteredEventPage: NextPage = () => {
     }
   }, [data]);
 
-  if (!filteredData) {
-    return <div className="center">Loading...</div>;
-  }
-
-  const year = +filteredData[0];
-  const month = +filteredData[1];
+  const year = filteredData ? +filteredData[0] : 0;
+  const month = filteredData ? +filteredData[1] : 0;
   const date = new Date(year, month - 1).toDateString();
+
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="description" content={`All events for ${date}`} />
+    </Head>
+  );
+
+  if (!filteredData) {
+    return (
+      <>
+        {pageHeadData}
+        <div className="center">Loading...</div>
+      </>
+    );
+  }
 
   if (
     isNaN(year) ||
@@ -55,6 +68,7 @@ const FilteredEventPage: NextPage = () => {
   ) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <div className="center">Invalid</div>
         </ErrorAlert>
@@ -72,6 +86,7 @@ const FilteredEventPage: NextPage = () => {
 
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
