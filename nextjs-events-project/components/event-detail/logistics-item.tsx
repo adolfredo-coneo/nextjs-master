@@ -1,6 +1,6 @@
 import classes from './logistics-item.module.css';
 
-function LogisticsItem(props) {
+function LogisticsItem(props: { children?: any; icon?: any; }) {
   const { icon: Icon } = props;
 
   return (
